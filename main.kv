@@ -1,0 +1,2479 @@
+#:import colors kivymd.color_definitions.colors
+#:import toast kivymd.toast.toast
+#:import get_display bidi.algorithm.get_display
+#:import reshape arabic_reshaper.reshape
+#:import fonts kivymd.font_definitions.font
+<Mainscreenunits>:
+    size_hint:None,None
+    width:dp(190)
+    height:self.width/1.3
+    radius:dp(15)
+    id:report_pad
+    padding:dp(20)
+    elevation:3
+    pos_hint:{'center_x':0.5,'center_y':0.5}
+    #md_bg_color:root.pad_color
+    md_bg_color:'white'
+
+    MDFloatLayout:
+        padding:dp(10)
+        pos_hint:{'center_x':0.5,'center_y':0.87}
+        size_hint:1,0.2
+        MDIcon:
+            icon:'account'
+            theme_text_color:'Custom'
+            text_color:'black'
+            pos_hint:{'center_x':.9,'center_y':0.5}
+        MDTextButton:
+            text:root.nametxt
+            halign:'center'
+            id:Neighbor_Name
+            font_name:'bijan.ttf'
+            theme_text_color:'Custom'
+            text_color: 'black'
+            font_size:'15sp'
+            pos_hint:{'center_x':.5,'center_y':0.5}
+            bold:True
+
+
+    MDFloatLayout:
+        padding:dp(10)
+        pos_hint:{'center_x':0.5,'center_y':0.68}
+        size_hint:1,0.2
+
+        MDIcon:
+            icon:'calendar'
+            theme_text_color:'Custom'
+            text_color:'black'
+            pos_hint:{'center_x':0.9,'center_y':0.5}
+        MDTextButton:
+            text:root.enterance_date
+            halign:'right'
+            pos_hint:{'center_x':0.5,'center_y':0.5}
+            theme_text_color:'Custom'
+            text_color:'black'
+            font_size:'15sp'
+            id:enterance_Date
+            font_name:'bijan.ttf'
+            bold:True
+            on_press:print(self.text)
+    MDFloatLayout:
+        size_hint:None,None
+        md_bg_color:'white'
+        width:self.parent.width/1.1
+        height:self.width/3
+        radius:dp(10)
+        padding:dp(20)
+        pos_hint:{'center_x':0.5,'center_y':0.3}
+        MDFloatLayout:
+            size_hint:None,None
+            width:self.parent.width/5
+            height:self.width
+            radius:dp(30)
+            pos_hint:{'center_x':0.87,'center_y':0.5}
+            md_bg_color:colors[app.theme_cls.primary_palette]['500']
+            MDTextButton:
+                text:root.unit_number
+                id:unit_number
+                theme_text_color:'Custom'
+                font_size:self.parent.width/1.5
+                text_color:'white'
+                font_name:'bijan.ttf'
+                pos_hint:{'center_x':0.5,'center_y':0.55}
+
+        MyIconButton:
+            icon:'cash-plus'
+            theme_text_color:'Custom'
+            md_bg_color:colors[app.theme_cls.primary_palette]['500']
+            icon_size:'14sp'
+            text_color:'white'
+            pos_hint:{'center_x':0.63,'center_y':0.5}
+            on_press:root.get_PaymentList()
+        MDLabel:
+            text:root.phone
+            opacity:0
+            id:unitcellphone
+
+        MyIconButton:
+            icon:'phone'
+            theme_text_color:'Custom'
+            text_color:'white'
+            md_bg_color:colors[app.theme_cls.primary_palette]['500']
+            icon_size:'13sp'
+            pos_hint:{'center_x':0.38,'center_y':0.5}
+            on_press:root.getunitphonenumber(root.ids.unitcellphone.text)
+        MyIconButton:
+            icon:'menu'
+            md_bg_color:colors[app.theme_cls.primary_palette]['500']
+            icon_size:'13sp'
+            theme_text_color:'Custom'
+            font_size:self.parent.width/1.5
+            text_color:'white'
+            pos_hint:{'center_x':0.15,'center_y':0.5}
+            on_press:root.getunitreportpayment(root.ids.unit_number.text)
+<Home_Unit_Payment_Report_Card>:
+    size_hint:1,None
+    height:dp(50)
+    radius:[15]
+    md_bg_color:'white'
+    elevation:3
+    MDLabel:
+        text:root.report_date
+        font_name:'bijan.ttf'
+        halign:'center'
+        pos_hint:{'center_x':0.85,'center_y':0.5}
+    MDLabel:
+        text:root.report_amount
+        font_name:'bijan.ttf'
+        halign:'center'
+        pos_hint:{'center_x':0.5,'center_y':0.5}
+
+    MDLabel:
+        text:root.report_for
+        font_name:'bijan.ttf'
+        halign:'center'
+        pos_hint:{'center_x':0.2,'center_y':0.5}
+
+<Home_Unit_Payment_Report>:
+    #orientation:'vertical'
+    size_hint:0.95,0.5
+    radius:[25]
+    md_bg_color:'white'
+    elevation:0
+    MDFloatLayout:
+        size_hint:1,0.17
+        radius:[25,25,0,0]
+        md_bg_color:colors[app.theme_cls.primary_palette]['300']
+        MDIconButton:
+            icon:'close'
+            pos_hint:{'center_x':0.05,'center_y':0.5}
+            icon_size:'13sp'
+            on_press:root.closebox()
+        MDLabel:
+            text:get_display(reshape('تاریخ :'))
+            font_name:'bijan.ttf'
+            halign:'center'
+            pos_hint:{'center_x':0.85,'center_y':0.5}
+        MDLabel:
+            text:get_display(reshape('مبلغ :'))
+            font_name:'bijan.ttf'
+            halign:'center'
+            pos_hint:{'center_x':0.5,'center_y':0.5}
+
+        MDLabel:
+            text:get_display(reshape('بابت :'))
+            font_name:'bijan.ttf'
+            halign:'center'
+            pos_hint:{'center_x':0.2,'center_y':0.5}
+
+
+<MyIconButton@MDIconButton+HoverBehavior>:
+    md_bg_color:colors[app.theme_cls.primary_palette]['500']
+    on_enter:self.md_bg_color='orange'
+    on_leave:self.md_bg_color=colors[app.theme_cls.primary_palette]['500']
+<Information>:
+    size_hint:0.9,None
+    height:dp(100)
+
+    text:get_display(reshape("[font=bijan.ttf]بدانیم [/font]"))
+    
+<Mycolors>:
+    size_hint: None, None
+    width:dp(50)
+    height:self.width
+    radius:self.width/2
+    on_release:self.wobble()
+<AddResident>:
+    size_hint:1,None
+    height:dp(500)
+    MDGridLayout:
+        cols:2
+        size_hint:0.8,None
+        height:dp(50)
+        pos_hint:{'center_x':0.5,'center_y':0.9}
+        MDFloatLayout:
+            size_hint_x:0.6
+            MDTextField:
+                id:resident_name_input
+                text:''
+                color_mode:'custom'
+                text_color_focus:[1,1,1,0]
+                text_color_normal:[1,1,1,0]
+                on_text:root.ids.resident_name_txt.text=get_display(reshape(self.text))
+                pos_hint:{'center_x':0.5,'center_y':0.5}
+            MDLabel:
+                text:''
+                pos_hint:{'center_x':0.5,'center_y':0.5}
+                id:resident_name_txt
+                halign:'center'
+                font_name:'bijan.ttf'
+
+        MDLabel:
+            text:get_display(reshape('نام:'))
+            halign:'right'
+            font_name:'bijan.ttf'
+            size_hint_x:0.4
+    MDGridLayout:
+        cols:2
+        size_hint:0.8,None
+        height:dp(50)
+        pos_hint:{'center_x':0.5,'center_y':0.8}
+        MDFloatLayout:
+            size_hint_x:0.6
+            MDTextField:
+                id:resident_family_name_input
+                text:''
+                color_mode:'custom'
+                text_color_focus:[1,1,1,0]
+                text_color_normal:[1,1,1,0]
+                on_text:root.ids.resident_family_name_txt.text=get_display(reshape(self.text))
+                pos_hint:{'center_x':0.5,'center_y':0.5}
+            MDLabel:
+                text:''
+                pos_hint:{'center_x':0.5,'center_y':0.5}
+                id:resident_family_name_txt
+                halign:'center'
+                font_name:'bijan.ttf'
+        MDLabel:
+            text:get_display(reshape('نام خانوادگی:'))
+            halign:'right'
+            font_name:'bijan.ttf'
+            size_hint_x:0.4
+    MDGridLayout:
+        cols:2
+        size_hint:0.8,None
+        height:dp(50)
+        pos_hint:{'center_x':0.5,'center_y':0.7}
+        MDFloatLayout:
+            size_hint_x:0.6
+            MDTextField:
+                id:resident_phone_input
+                text:''
+                color_mode:'custom'
+                text_color_focus:[1,1,1,0]
+                text_color_normal:[1,1,1,0]
+                on_text:root.ids.resident_phone_txt.text=get_display(reshape(self.text))
+                pos_hint:{'center_x':0.5,'center_y':0.5}
+            MDLabel:
+                text:''
+                pos_hint:{'center_x':0.5,'center_y':0.5}
+                id:resident_phone_txt
+                halign:'center'
+                font_name:'bijan.ttf'
+
+        MDLabel:
+            text:get_display(reshape('شماره موبایل:'))
+            halign:'right'
+            font_name:'bijan.ttf'
+            size_hint_x:0.4
+    MDGridLayout:
+        cols:2
+        size_hint:0.8,None
+        height:dp(50)
+        pos_hint:{'center_x':0.5,'center_y':0.6}
+        MDFloatLayout:
+            size_hint_x:0.6
+            MDTextField:
+                id:resident_unit_input
+                text:''
+                color_mode:'custom'
+                text_color_focus:[1,1,1,0]
+                text_color_normal:[1,1,1,0]
+                on_text:root.ids.resident_unit_txt.text=get_display(reshape(self.text))
+                pos_hint:{'center_x':0.5,'center_y':0.5}
+            MDLabel:
+                text:''
+                pos_hint:{'center_x':0.5,'center_y':0.5}
+                id:resident_unit_txt
+                halign:'center'
+                font_name:'bijan.ttf'
+
+        MDLabel:
+            text:get_display(reshape('شماره واحد:'))
+            halign:'right'
+            font_name:'bijan.ttf'
+            size_hint_x:0.4
+    MDGridLayout:
+        cols:2
+        size_hint:0.8,None
+        height:dp(50)
+        pos_hint:{'center_x':0.5,'center_y':0.5}
+        MDFloatLayout:
+            size_hint_x:0.6
+            MDTextField:
+                id:resident_family_number_input
+                text:''
+                color_mode:'custom'
+                text_color_focus:[1,1,1,0]
+                text_color_normal:[1,1,1,0]
+                on_text:root.ids.resident_family_number_txt.text=get_display(reshape(self.text))
+                pos_hint:{'center_x':0.5,'center_y':0.5}
+            MDLabel:
+                text:''
+                pos_hint:{'center_x':0.5,'center_y':0.5}
+                id:resident_family_number_txt
+                halign:'center'
+                font_name:'bijan.ttf'
+        MDLabel:
+            text:get_display(reshape('تعداد اعضا :'))
+            halign:'right'
+            font_name:'bijan.ttf'
+            size_hint_x:0.4
+    MDGridLayout:
+        cols:2
+        size_hint:0.8,None
+        height:dp(50)
+        pos_hint:{'center_x':0.5,'center_y':0.4}
+        MDFloatLayout:
+            size_hint_x:0.6
+            MDTextField:
+                id:resident_date_in_input
+                text:''
+                color_mode:'custom'
+                text_color_focus:[1,1,1,0]
+                text_color_normal:[1,1,1,0]
+                on_text:root.ids.resident_date_in_txt.text=get_display(reshape(self.text))
+                pos_hint:{'center_x':0.5,'center_y':0.5}
+            MDLabel:
+                text:''
+                pos_hint:{'center_x':0.5,'center_y':0.5}
+                id:resident_date_in_txt
+                halign:'center'
+                font_name:'bijan.ttf'
+        MDLabel:
+            text:get_display(reshape('تاریخ ورود :'))
+            halign:'right'
+            font_name:'bijan.ttf'
+            size_hint_x:0.4
+
+    MDIconButton:
+        icon:'database-plus'
+        pos_hint:{'center_x':0.1,'center_y':0.25}
+        icon_size:'30sp'
+        theme_text_color:'Custom'
+        text_color:'white'
+        on_press:root.addresidenttodatabase()
+
+
+<AddOwner>:
+    size_hint:1,None
+    height:dp(300)
+    MDGridLayout:
+        cols:2
+        size_hint:0.8,None
+        height:dp(50)
+        pos_hint:{'center_x':0.5,'center_y':0.8}
+        MDFloatLayout:
+            size_hint_x:0.6
+            MDTextField:
+                id:owner_name_input
+                text:''
+                color_mode:'custom'
+                text_color_focus:[1,1,1,0]
+                text_color_normal:[1,1,1,0]
+                on_text:root.ids.owner_name_txt.text=get_display(reshape(self.text))
+                pos_hint:{'center_x':0.5,'center_y':0.5}
+            MDLabel:
+                text:''
+                pos_hint:{'center_x':0.5,'center_y':0.5}
+                id:owner_name_txt
+                halign:'center'
+                font_name:'bijan.ttf'
+
+        MDLabel:
+            text:get_display(reshape('نام:'))
+            halign:'right'
+            font_name:'bijan.ttf'
+            size_hint_x:0.4
+    MDGridLayout:
+        cols:2
+        size_hint:0.8,None
+        height:dp(50)
+        pos_hint:{'center_x':0.5,'center_y':0.65}
+        MDFloatLayout:
+            size_hint_x:0.6
+            MDTextField:
+                id:owner_family_name_input
+                text:''
+                color_mode:'custom'
+                text_color_focus:[1,1,1,0]
+                text_color_normal:[1,1,1,0]
+                on_text:root.ids.owner_family_name_txt.text=get_display(reshape(self.text))
+                pos_hint:{'center_x':0.5,'center_y':0.5}
+            MDLabel:
+                text:''
+                pos_hint:{'center_x':0.5,'center_y':0.5}
+                id:owner_family_name_txt
+                halign:'center'
+                font_name:'bijan.ttf'
+        MDLabel:
+            text:get_display(reshape('نام خانوادگی:'))
+            halign:'right'
+            font_name:'bijan.ttf'
+            size_hint_x:0.4
+    MDGridLayout:
+        cols:2
+        size_hint:0.8,None
+        height:dp(50)
+        pos_hint:{'center_x':0.5,'center_y':0.5}
+        MDFloatLayout:
+            size_hint_x:0.6
+            MDTextField:
+                id:owner_phone_input
+                text:''
+                color_mode:'custom'
+                text_color_focus:[1,1,1,0]
+                text_color_normal:[1,1,1,0]
+                on_text:root.ids.owner_phone_txt.text=get_display(reshape(self.text))
+                pos_hint:{'center_x':0.5,'center_y':0.5}
+            MDLabel:
+                text:''
+                pos_hint:{'center_x':0.5,'center_y':0.5}
+                id:owner_phone_txt
+                halign:'center'
+                font_name:'bijan.ttf'
+
+        MDLabel:
+            text:get_display(reshape('شماره موبایل:'))
+            halign:'right'
+            font_name:'bijan.ttf'
+            size_hint_x:0.4
+    MDGridLayout:
+        cols:2
+        size_hint:0.8,None
+        height:dp(50)
+        pos_hint:{'center_x':0.5,'center_y':0.35}
+        MDFloatLayout:
+            size_hint_x:0.6
+            MDTextField:
+                id:owner_unit_input
+                text:''
+                color_mode:'custom'
+                text_color_focus:[1,1,1,0]
+                text_color_normal:[1,1,1,0]
+                on_text:root.ids.owner_unit_txt.text=get_display(reshape(self.text))
+                pos_hint:{'center_x':0.5,'center_y':0.5}
+            MDLabel:
+                text:''
+                pos_hint:{'center_x':0.5,'center_y':0.5}
+                id:owner_unit_txt
+                halign:'center'
+                font_name:'bijan.ttf'
+
+        MDLabel:
+            text:get_display(reshape('شماره واحد:'))
+            halign:'right'
+            font_name:'bijan.ttf'
+            size_hint_x:0.4
+
+    MDIconButton:
+        icon:'database-plus'
+        pos_hint:{'center_x':0.1,'center_y':0.1}
+        icon_size:'30sp'
+        theme_text_color:'Custom'
+        text_color:'white'
+        on_press:root.addownertodatabase()
+
+<AddBuildingCog>:
+    size_hint:1,None
+    height:dp(300)
+    spacing:dp(10)
+    MDGridLayout:
+        cols:2
+        size_hint:1,None
+        height:dp(50)
+        pos_hint:{'center_x':0.5,'center_y':0.85}
+        MDFloatLayout:
+            size_hint_x:0.6
+            pos_hint:{'center_x':0.5,'center_y':0.5}
+            MDTextField:
+                id:b_name_text_filed
+                text:''
+                color_mode:'custom'
+                text_color_focus:[1,1,1,0]
+                text_color_normal:[1,1,1,0]
+                on_text:root.ids.b_name_text.text=get_display(reshape(self.text))
+                pos_hint:{'center_x':0.5,'center_y':0.5}
+            MDLabel:
+                text:''
+                pos_hint:{'center_x':0.5,'center_y':0.5}
+                id:b_name_text
+                halign:'center'
+                font_name:'bijan.ttf'
+        MDLabel:
+            text:get_display(reshape('نام متصدی خدمات'))
+            halign:'right'
+            font_name:'bijan.ttf'
+            size_hint_x:0.4
+    MDGridLayout:
+        cols:2
+        size_hint:1,None
+        height:dp(50)
+        pos_hint:{'center_x':0.5,'center_y':0.7}
+        MDFloatLayout:
+            size_hint_x:0.6
+            MDTextField:
+                id:b_type_text_filed
+                text:''
+                color_mode:'custom'
+                text_color_focus:[1,1,1,0]
+                text_color_normal:[1,1,1,0]
+                on_text:root.ids.b_type_text.text=get_display(reshape(self.text))
+                pos_hint:{'center_x':0.5,'center_y':0.5}
+            MDLabel:
+                text:''
+                pos_hint:{'center_x':0.5,'center_y':0.5}
+                id:b_type_text
+                halign:'center'
+                font_name:'bijan.ttf'
+
+        MDLabel:
+            text:get_display(reshape('نوع خدمات'))
+            halign:'right'
+            font_name:'bijan.ttf'
+            size_hint_x:0.4
+    MDGridLayout:
+        cols:2
+        size_hint:1,None
+        height:dp(50)
+        pos_hint:{'center_x':0.5,'center_y':0.55}
+        MDFloatLayout:
+            size_hint_x:0.6
+            MDTextField:
+                id:b_tel_text_filed
+                text:''
+                color_mode:'custom'
+                text_color_focus:[1,1,1,0]
+                text_color_normal:[1,1,1,0]
+                on_text:root.ids.b_tel_text.text=get_display(reshape(self.text))
+                pos_hint:{'center_x':0.5,'center_y':0.5}
+            MDLabel:
+                text:''
+                pos_hint:{'center_x':0.5,'center_y':0.5}
+                id:b_tel_text
+                halign:'center'
+                font_name:'bijan.ttf'
+
+        MDLabel:
+            text:get_display(reshape(' شماره تماس '))
+            halign:'right'
+            font_name:'bijan.ttf'
+            size_hint_x:0.4
+    MDRaisedButton:
+        text:get_display(reshape('افزودن'))
+        font_name:'bijan.ttf'
+        size_hint_x:0.4
+        pos_hint:{'center_x':0.5,'center_y':0.2}
+        md_bg_color:'white'
+        theme_text_color:'Custom'
+        text_color:colors[app.theme_cls.primary_palette]['500']
+        height:dp(50)
+        on_press:root.add_new_building_cog()
+<AddPayment>:
+    size_hint:1,None
+    height:dp(400)
+
+    MDGridLayout:
+        cols:2
+        size_hint:1,None
+        height:dp(50)
+        pos_hint:{'center_x':0.5,'center_y':0.9}
+        MDFloatLayout:
+            size_hint_x:0.6
+            MDTextField:
+                id:p_date_text_filed
+                text:''
+                color_mode:'custom'
+                text_color_focus:[1,1,1,0]
+                text_color_normal:[1,1,1,0]
+                on_text:root.ids.p_date_text.text=get_display(reshape(self.text))
+                pos_hint:{'center_x':0.5,'center_y':0.5}
+            MDLabel:
+                text:''
+                pos_hint:{'center_x':0.5,'center_y':0.5}
+                id:p_date_text
+                halign:'center'
+                font_name:'bijan.ttf'
+            MDIconButton:
+                icon:'calendar-month'
+                on_press:root.get_date()
+                pos_hint: {'center_x': 0.1,'center_y': 0.5}
+
+
+        MDLabel:
+            text:get_display(reshape('تاریخ پرداخت'))
+            halign:'right'
+            font_name:'bijan.ttf'
+            size_hint_x:0.4
+
+    MDGridLayout:
+        cols:2
+        size_hint:1,None
+        height:dp(50)
+        pos_hint:{'center_x':0.5,'center_y':0.75}
+        MDFloatLayout:
+            size_hint_x:0.6
+            MDTextField:
+                id:p_amount_text_filed
+                text:''
+                color_mode:'custom'
+                text_color_focus:[1,1,1,0]
+                text_color_normal:[1,1,1,0]
+                on_text:root.ids.p_amount_text.text=get_display(reshape(self.text))
+                pos_hint:{'center_x':0.5,'center_y':0.5}
+            MDLabel:
+                text:''
+                pos_hint:{'center_x':0.5,'center_y':0.5}
+                id:p_amount_text
+                halign:'center'
+                font_name:'bijan.ttf'
+
+        MDLabel:
+            text:get_display(reshape('مبلغ پرداختی'))
+            halign:'right'
+            font_name:'bijan.ttf'
+            size_hint_x:0.4
+    MDGridLayout:
+        cols:2
+        size_hint:1,None
+        height:dp(50)
+        pos_hint:{'center_x':0.5,'center_y':0.6}
+        MDFloatLayout:
+            size_hint_x:0.6
+            MDTextField:
+                id:p_for_text_filed
+                text:''
+                color_mode:'custom'
+                text_color_focus:[1,1,1,0]
+                text_color_normal:[1,1,1,0]
+                on_text:root.ids.p_for_text.text=get_display(reshape(self.text))
+                pos_hint:{'center_x':0.5,'center_y':0.5}
+            MDLabel:
+                text:''
+                pos_hint:{'center_x':0.5,'center_y':0.5}
+                id:p_for_text
+                halign:'center'
+                font_name:'bijan.ttf'
+
+        MDLabel:
+            text:get_display(reshape('بابت'))
+            halign:'right'
+            font_name:'bijan.ttf'
+            size_hint_x:0.4
+    MDGridLayout:
+        cols:2
+        size_hint:1,None
+        pos_hint:{'center_x':0.5,'center_y':0.45}
+        height:dp(50)
+        MDFloatLayout:
+            size_hint_x:0.6
+            MDTextField:
+                id:whom_text_filed
+                text:''
+                color_mode:'custom'
+                text_color_focus:[1,1,1,0]
+                text_color_normal:[1,1,1,0]
+                on_text:root.ids.whom_text.text=get_display(reshape(self.text))
+                pos_hint:{'center_x':0.5,'center_y':0.5}
+            MDLabel:
+                text:''
+                pos_hint:{'center_x':0.5,'center_y':0.5}
+                id:whom_text
+                halign:'center'
+                font_name:'bijan.ttf'
+
+        MDLabel:
+            text:get_display(reshape(' بستانکار '))
+            halign:'right'
+            font_name:'bijan.ttf'
+            size_hint_x:0.4
+    MDRaisedButton:
+        text:get_display(reshape('افزودن'))
+        font_name:'bijan.ttf'
+        size_hint_x:0.4
+        height:dp(50)
+        pos_hint:{'center_x':0.5,'center_y':0.3}
+        md_bg_color:'white'
+        theme_text_color:'Custom'
+        text_color:colors[app.theme_cls.primary_palette]['600']
+        on_press:root.add_new_payment()
+    MDLabel:
+        text:get_display(reshape(' **  پرداختی‌ها به تومان باشد.'))
+        halign:'center'
+        font_name:'bijan.ttf'
+        pos_hint:{'center_x':0.5,'center_y':0.2}
+        size_hint_x:0.7
+
+
+<AddIncome>:
+    size_hint:1,None
+    height:dp(400)
+    MDGridLayout:
+        cols:2
+        pos_hint:{'center_x':0.5,'center_y':0.9}
+        size_hint:1,None
+        height:dp(50)
+        MDFloatLayout:
+            size_hint_x:0.6
+            MDTextField:
+                id:add_unit_text_filed
+                text:''
+                color_mode:'custom'
+                text_color_focus:[1,1,1,0]
+                text_color_normal:[1,1,1,0]
+                on_text:root.ids.add_unit_text.text=get_display(reshape(self.text))
+                pos_hint:{'center_x':0.5,'center_y':0.5}
+            MDLabel:
+                text:''
+                pos_hint:{'center_x':0.5,'center_y':0.5}
+                id:add_unit_text
+                halign:'center'
+                font_name:'bijan.ttf'
+
+        MDLabel:
+            text:get_display(reshape(' شماره واحد'))
+            halign:'right'
+            font_name:'bijan.ttf'
+            size_hint_x:0.4
+    MDGridLayout:
+        cols:2
+        size_hint:1,None
+        height:dp(50)
+        pos_hint:{'center_x':0.5,'center_y':0.8}
+        MDFloatLayout:
+            size_hint_x:0.6
+            MDTextField:
+                id:add_income_date_text_filed
+                text:''
+                color_mode:'custom'
+                text_color_focus:[1,1,1,0]
+                text_color_normal:[1,1,1,0]
+                on_text:root.ids.add_income_date_text.text=get_display(reshape(self.text))
+                pos_hint:{'center_x':0.5,'center_y':0.5}
+            MDLabel:
+                text:''
+                pos_hint:{'center_x':0.5,'center_y':0.5}
+                id:add_income_date_text
+                halign:'center'
+                font_name:'bijan.ttf'
+            MDIconButton:
+                icon:'calendar-month'
+                on_press:root.get_date()
+
+                pos_hint: {'center_x': 0.1,'center_y': 0.5}
+
+
+        MDLabel:
+            text:get_display(reshape('تاریخ واریز'))
+            halign:'right'
+            font_name:'bijan.ttf'
+            size_hint_x:0.4
+
+    MDGridLayout:
+        cols:2
+        size_hint:1,None
+        height:dp(50)
+        pos_hint:{'center_x':0.5,'center_y':0.7}
+        MDFloatLayout:
+            size_hint_x:0.6
+            MDTextField:
+                id:add_amount_text_filed
+                text:''
+                color_mode:'custom'
+                text_color_focus:[1,1,1,0]
+                text_color_normal:[1,1,1,0]
+                on_text:root.ids.add_amount_text.text=get_display(reshape(self.text))
+                pos_hint:{'center_x':0.5,'center_y':0.5}
+            MDLabel:
+                text:''
+                pos_hint:{'center_x':0.5,'center_y':0.5}
+                id:add_amount_text
+                halign:'center'
+                font_name:'bijan.ttf'
+
+        MDLabel:
+            text:get_display(reshape('مبلغ واریزی'))
+            halign:'right'
+            font_name:'bijan.ttf'
+            size_hint_x:0.4
+    MDGridLayout:
+        cols:2
+        size_hint:1,None
+        height:dp(50)
+        pos_hint:{'center_x':0.5,'center_y':0.6}
+        MDFloatLayout:
+            size_hint_x:0.6
+            MDTextField:
+                id:add_for_text_filed
+                text:''
+                color_mode:'custom'
+                text_color_focus:[1,1,1,0]
+                text_color_normal:[1,1,1,0]
+                on_text:root.ids.add_for_text.text=get_display(reshape(self.text))
+                pos_hint:{'center_x':0.5,'center_y':0.5}
+            MDLabel:
+                text:''
+                pos_hint:{'center_x':0.5,'center_y':0.5}
+                id:add_for_text
+                halign:'center'
+                font_name:'bijan.ttf'
+
+        MDLabel:
+            text:get_display(reshape('بابت'))
+            halign:'right'
+            font_name:'bijan.ttf'
+            size_hint_x:0.4
+    MDRaisedButton:
+        text:get_display(reshape(' افزودن'))
+        font_name:'bijan.ttf'
+        pos_hint:{'center_x':0.5,'center_y':0.25}
+        size_hint_x:0.4
+        height:dp(50)
+        md_bg_color:'white'
+        theme_text_color:'Custom'
+        text_color:colors[app.theme_cls.primary_palette]['600']
+        on_press:root.add_new_income()
+    MDLabel:
+        text:get_display(reshape(' ** واریزی ها به تومان باشد.'))
+        halign:'center'
+        font_name:'bijan.ttf'
+        size_hint_x:0.7
+        pos_hint:{'center_x':0.5,'center_y':0.15}
+
+<AddNote>:
+    size_hint:1,None
+    height:dp(400)
+    spacing:dp(10)
+    MDGridLayout:
+        cols:2
+        size_hint:0.8,None
+        height:dp(50)
+        pos_hint:{'center_x':0.5,'center_y':0.8}
+        MDFloatLayout:
+            size_hint_x:0.6
+            MDTextField:
+                id:task_title_input
+                text:''
+                color_mode:'custom'
+                text_color_focus:[1,1,1,0]
+                text_color_normal:[1,1,1,0]
+                on_text:root.ids.task_title_txt.text=get_display(reshape(self.text))
+                pos_hint:{'center_x':0.5,'center_y':0.5}
+            MDLabel:
+                text:''
+                pos_hint:{'center_x':0.5,'center_y':0.5}
+                id:task_title_txt
+                halign:'center'
+                font_name:'bijan.ttf'
+
+        MDLabel:
+            text:get_display(reshape('عنوان:'))
+            halign:'right'
+            font_name:'bijan.ttf'
+            size_hint_x:0.4
+
+    MDGridLayout:
+        cols:2
+        size_hint:0.8,None
+        height:dp(50)
+        pos_hint:{'center_x':0.5,'center_y':0.7}
+        MDFloatLayout:
+            size_hint_x:0.6
+            MDTextField:
+                id:task_desc_input
+                text:''
+                multiline:True
+                color_mode:'custom'
+                text_color_focus:[1,1,1,0]
+                text_color_normal:[1,1,1,0]
+                on_text:root.ids.task_desc_txt.text=get_display(reshape(self.text))
+                pos_hint:{'center_x':0.5,'center_y':0.4}
+            MDLabel:
+                text:''
+                pos_hint:{'center_x':0.5,'center_y':0.4}
+                id:task_desc_txt
+                halign:'center'
+                font_name:'bijan.ttf'
+
+        MDLabel:
+            text:get_display(reshape('توضیحات:'))
+            halign:'right'
+            font_name:'bijan.ttf'
+            size_hint_x:0.4
+
+
+    MDIconButton:
+        icon:'database-plus'
+        pos_hint:{'center_x':0.1,'center_y':0.5}
+        icon_size:'30sp'
+        theme_text_color:'Custom'
+        text_color:'white'
+        on_press:root.addtasktodatabase()
+
+
+<MyScreen>:    
+    MDNavigationLayout:    
+        MDScreenManager:
+            id:SM
+            MDScreen:
+                name:'main'
+                MDBoxLayout:
+                    orientation:'vertical'
+                    MDTopAppBar:
+                        title:get_display(reshape("[font=bijan.ttf] خانه[/font]"))
+                        left_action_items:[['menu' ,lambda x:nav_drawer.set_state('open'),get_display(reshape('[font=bijan.ttf]منو[/font]'))]]
+
+                        opposite_colors: True
+                        elevation:3
+
+
+                    MDFloatLayout:
+                        MDFloatLayout:
+                            size_hint:0.95,0.9
+                            pos_hint:{'center_x': 0.5,'center_y':0.5}
+                            MDLabel:
+                                pos_hint:{'center_x': 0.5,'center_y':0.95}
+                                text:root.time_hour
+                                halign:'center'
+
+                                font_size:self.parent.width/6
+                            MDLabel:
+                                halign:'center'
+                                pos_hint:{'center_x': 0.5,'center_y':0.82}
+                                text:root.time_minute
+
+                                font_size:self.parent.width/5
+                                theme_text_color:'Custom'
+                                text_color:[0,0,0,0.5]
+                        ScrollView:
+                            size_hint:0.7,0.7
+                            pos_hint:{'center_x': 0.35,'center_y':0.3}
+                            do_scroll_x:False
+
+                            bar_width:0
+                            MDGridLayout:
+                                cols:1
+                                pos_hint:{'center_x': 0.5,'center_y':0.5}
+                                size_hint:1,None
+                                height:self.minimum_height
+                                rows_default_width:dp(50)
+                                spacing:dp(10)
+                                padding:dp(5)
+                                id:mainscreennumberpad
+
+                        Home_Unit_Payment_Report:
+                            pos_hint:{'center_x':0.5,'center_y':-1}
+                            id:Home_Unit_Payment_Report
+                            scale_value_x:0
+                            scale_value_y:0
+                            orientation:'vertical'
+
+                            ScrollView:
+                                do_scroll_x:False
+                                pos_hint:{'center_x':0.5,'center_y':0.5}
+                                size_hint:1,0.8
+                                MDGridLayout:
+                                    cols:1
+                                    size_hint:1,None
+                                    height:self.minimum_height
+                                    rows_default_height:dp(30)
+                                    padding:dp(5)
+                                    spacing:dp(5)
+                                    id:home_report_payment
+                            MDFloatLayout:
+                                size_hint:1,0.17
+                                radius:[0,0,25,25]
+                                md_bg_color:colors[app.theme_cls.primary_palette]['300']
+                                MDLabel:
+                                    text:get_display(reshape('کل واریزی:'))
+                                    font_name:'bijan.ttf'
+                                    halign:'center'
+                                    pos_hint:{'center_x':0.85,'center_y':0.5}
+                                MDLabel:
+                                    text:f' ناموت {root.total_pay}'
+                                    font_name:'bijan.ttf'
+                                    halign:'center'
+                                    pos_hint:{'center_x':0.2,'center_y':0.5}
+
+                        MDFloatingActionButtonSpeedDial:
+                            pos_hint:{'center_x': 0.8,'center_y':0.2}
+                            data:root.data
+                            id:speed_dial
+                            font_name:'bijan.ttf'
+                            theme_text_color:'Custom'
+                            label_text_color:[1,1,1,0]
+                            root_button_anim:True
+                            color_icon_root_button:[1,1,1,1]
+                            color_icon_stack_button:[1,1,1,1]
+
+                        MDFloatLayout: ## Input task information
+                            size_hint:1,0.7
+                            id:adddialogbox
+                            radius:[25]
+                            md_bg_color:colors[app.theme_cls.primary_palette]['500']
+                            pos_hint:{'center_x':0.5,'center_y':-1}
+                            MDIconButton:
+                                icon:'chevron-triple-down'
+                                icon_size:'30sp'
+                                pos_hint:{'center_x':0.48,'center_y':0.95}
+                                on_press:root.showaddnotemain()
+                                theme_text_color:'Custom'
+                                text_color:'white'
+                            ScrollView:
+                                do_scroll_x:False
+                                do_scroll_y:True
+                                size_hint:1,0.9
+                                pos_hint:{'center_x':0.5,'center_y':0.5}
+                                MDGridLayout:
+                                    pos_hint:{'center_x':0.5,'center_y':0.5}
+                                    cols:1
+                                    size_hint:1,None
+                                    adoptive_height:True
+                                    id:addpad
+                                    padding:dp(10)
+                                    rows_default_height:dp(300)
+
+
+
+
+
+
+
+
+
+
+
+
+            MDScreen:
+                name:'note'
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    MDTopAppBar:
+                        title:get_display(reshape("[font=bijan.ttf] یادآوری [/font]"))
+                        left_action_items:[['menu' ,lambda x:nav_drawer.set_state('open'),get_display(reshape('[font=bijan.ttf]منو[/font]'))]]
+                        opposite_colors: True
+                        elevation:3
+                    MDFloatLayout:
+                        #md_bg_color:colors[app.theme_cls.primary_palette]['100']
+                        MDBoxLayout:
+                            orientation:'vertical'
+                            size:root.size
+                            MDBoxLayout:
+                                size_hint:1,0.5
+                                orientation:'vertical'
+                                MDFloatLayout:
+                                    size_hint:1,0.2
+                                    md_bg_color:colors[app.theme_cls.primary_palette]['500']
+                                    MDLabel:
+                                        text:get_display(reshape('قابل توجه:'))
+                                        halign:'center'
+                                        pos_hint:{'center_x':0.5,'center_y':0.5}
+                                        font_name:'bijan.ttf'
+                                        theme_text_color:'Custom'
+                                        text_color:'white'
+                                MDFloatLayout:
+                                    size_hint:1,0.8
+
+                                    ScrollView:
+                                        do_scroll_x:False
+                                        do_scroll_y:True
+                                        size_hint:1,1
+                                        pos_hint:{'center_x':0.5,'center_y':0.5}
+                                        MDGridLayout:
+                                            cols:1
+                                            pos_hint:{'center_x':0.5,'center_y':0.5}
+                                            size_hint:1,None
+                                            height:self.minimum_height
+                                            padding:dp(5)
+                                            spacing:dp(5)
+                                            rows_deafault_height:dp(80)
+                                            id:undonenotepad
+
+                            MDBoxLayout:
+                                size_hint:1,0.5
+                                orientation:'vertical'
+                                MDFloatLayout:
+                                    size_hint:1,0.2
+                                    md_bg_color:colors[app.theme_cls.primary_palette]['500']
+                                    MDLabel:
+                                        text:get_display(reshape(' انجام شده:'))
+                                        halign:'center'
+                                        theme_text_color:'Custom'
+                                        text_color:'white'
+                                        pos_hint:{'center_x':0.5,'center_y':0.5}
+                                        font_name:'bijan.ttf'
+                                MDFloatLayout:
+                                    size_hint:1,0.8
+
+                                    ScrollView:
+                                        do_scroll_x:False
+                                        do_scroll_y:True
+                                        size_hint:1,1
+                                        pos_hint:{'center_x':0.5,'center_y':0.5}
+                                        MDGridLayout:
+                                            cols:1
+                                            pos_hint:{'center_x':0.5,'center_y':0.5}
+                                            size_hint:1,None
+                                            height:self.minimum_height
+                                            padding:dp(5)
+                                            spacing:dp(5)
+                                            rows_deafault_height:dp(80)
+                                            id:donenotepad
+
+
+
+                        MDFloatLayout: ## Input task information
+                            size_hint:1,0.7
+                            id:addnote
+                            radius:[25]
+                            md_bg_color:colors[app.theme_cls.primary_palette]['500']
+                            pos_hint:{'center_x':0.5,'center_y':-1}
+                            MDIconButton:
+                                icon:'chevron-triple-down'
+                                pos_hint:{'center_x':0.48,'center_y':0.95}
+                                icon_size:'30sp'
+                                on_press:root.showaddnote()
+                                theme_text_color:'Custom'
+                                text_color:'white'
+                            MDGridLayout:
+                                cols:2
+                                size_hint:0.8,None
+                                height:dp(50)
+                                pos_hint:{'center_x':0.5,'center_y':0.8}
+                                MDFloatLayout:
+                                    size_hint_x:0.6
+                                    MDTextField:
+                                        id:task_title_input
+                                        text:''
+                                        color_mode:'custom'
+                                        text_color_focus:[1,1,1,0]
+                                        text_color_normal:[1,1,1,0]
+                                        on_text:root.ids.task_title_txt.text=get_display(reshape(self.text))
+                                        pos_hint:{'center_x':0.5,'center_y':0.5}
+                                    MDLabel:
+                                        text:''
+                                        pos_hint:{'center_x':0.5,'center_y':0.5}
+                                        id:task_title_txt
+                                        halign:'center'
+                                        font_name:'bijan.ttf'
+
+                                MDLabel:
+                                    text:get_display(reshape('عنوان:'))
+                                    halign:'right'
+                                    font_name:'bijan.ttf'
+                                    size_hint_x:0.4
+
+                            MDGridLayout:
+                                cols:2
+                                size_hint:0.8,None
+                                height:dp(300)
+                                pos_hint:{'center_x':0.5,'center_y':0.6}
+                                MDFloatLayout:
+                                    size_hint_x:0.6
+                                    MDTextField:
+                                        id:task_desc_input
+                                        text:''
+                                        multiline:True
+                                        color_mode:'custom'
+                                        text_color_focus:[1,1,1,0]
+                                        text_color_normal:[1,1,1,0]
+                                        on_text:root.ids.task_desc_txt.text=get_display(reshape(self.text))
+                                        pos_hint:{'center_x':0.5,'center_y':0.4}
+                                    MDLabel:
+                                        text:''
+                                        pos_hint:{'center_x':0.5,'center_y':0.4}
+                                        id:task_desc_txt
+                                        halign:'center'
+                                        font_name:'bijan.ttf'
+
+                                MDLabel:
+                                    text:get_display(reshape('توضیحات:'))
+                                    halign:'right'
+                                    font_name:'bijan.ttf'
+                                    size_hint_x:0.4
+
+
+                            MDIconButton:
+                                icon:'database-plus'
+                                pos_hint:{'center_x':0.1,'center_y':0.1}
+                                icon_size:'30sp'
+                                theme_text_color:'Custom'
+                                text_color:'white'
+                                on_press:root.addtasktodatabase()
+
+
+
+
+            MDScreen:
+                name:'new_income'
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    MDTopAppBar:
+                        title:get_display(reshape("[font=bijan.ttf]افزودن واریزی [/font]"))
+                        left_action_items:[['menu' ,lambda x:nav_drawer.set_state('open'),get_display(reshape('[font=bijan.ttf]منو[/font]'))]]
+                        elevation:3
+
+                    MDFloatLayout:
+                        ScrollView:
+                            do_scroll_x:False
+                            do_scroll_y:True
+                            size_hint:0.95,0.95
+                            bar_width:dp(5)
+                            pos_hint: {'center_x': 0.5,'center_y': 0.5}
+                            MDGridLayout:
+                                cols:1
+                                id:payment
+                                size_hint: 1, None
+                                pos_hint: {'center_x': 0.5,'center_y': 0.5}
+                                height:self.minimum_height
+                                padding:dp(20)
+                                spacing:dp(20)
+                                rows_default_height:dp(100)
+                                MDGridLayout:
+                                    cols:2
+                                    size_hint:1,None
+                                    height:dp(50)
+                                    MDFloatLayout:
+                                        size_hint_x:0.6
+                                        MDTextField:
+                                            id:unit_text_filed
+                                            text:''
+                                            color_mode:'custom'
+                                            text_color_focus:[1,1,1,0]
+                                            text_color_normal:[1,1,1,0]
+                                            on_text:root.ids.unit_text.text=get_display(reshape(self.text))
+                                            pos_hint:{'center_x':0.5,'center_y':0.5}
+                                        MDLabel:
+                                            text:''
+                                            pos_hint:{'center_x':0.5,'center_y':0.5}
+                                            id:unit_text
+                                            halign:'center'
+                                            font_name:'bijan.ttf'
+
+                                    MDLabel:
+                                        text:get_display(reshape(' شماره واحد'))
+                                        halign:'right'
+                                        font_name:'bijan.ttf'
+                                        size_hint_x:0.4
+                                MDGridLayout:
+                                    cols:2
+                                    size_hint:1,None
+                                    height:dp(50)
+                                    MDFloatLayout:
+                                        size_hint_x:0.6
+                                        MDTextField:
+                                            id:payment_date_text_filed
+                                            text:''
+                                            color_mode:'custom'
+                                            text_color_focus:[1,1,1,0]
+                                            text_color_normal:[1,1,1,0]
+                                            on_text:root.ids.payment_date_text.text=get_display(reshape(self.text))
+                                            pos_hint:{'center_x':0.5,'center_y':0.5}
+                                        MDLabel:
+                                            text:''
+                                            pos_hint:{'center_x':0.5,'center_y':0.5}
+                                            id:payment_date_text
+                                            halign:'center'
+                                            font_name:'bijan.ttf'
+                                        MDIconButton:
+                                            icon:'calendar-month'
+                                            on_press:root.get_date()
+
+                                            pos_hint: {'center_x': 0.1,'center_y': 0.5}
+
+
+                                    MDLabel:
+                                        text:get_display(reshape('تاریخ واریز'))
+                                        halign:'right'
+                                        font_name:'bijan.ttf'
+                                        size_hint_x:0.4
+
+                                MDGridLayout:
+                                    cols:2
+                                    size_hint:1,None
+                                    height:dp(50)
+                                    MDFloatLayout:
+                                        size_hint_x:0.6
+                                        MDTextField:
+                                            id:amount_text_filed
+                                            text:''
+                                            color_mode:'custom'
+                                            text_color_focus:[1,1,1,0]
+                                            text_color_normal:[1,1,1,0]
+                                            on_text:root.ids.amount_text.text=get_display(reshape(self.text))
+                                            pos_hint:{'center_x':0.5,'center_y':0.5}
+                                        MDLabel:
+                                            text:''
+                                            pos_hint:{'center_x':0.5,'center_y':0.5}
+                                            id:amount_text
+                                            halign:'center'
+                                            font_name:'bijan.ttf'
+
+                                    MDLabel:
+                                        text:get_display(reshape('مبلغ واریزی'))
+                                        halign:'right'
+                                        font_name:'bijan.ttf'
+                                        size_hint_x:0.4
+                                MDGridLayout:
+                                    cols:2
+                                    size_hint:1,None
+                                    height:dp(50)
+                                    MDFloatLayout:
+                                        size_hint_x:0.6
+                                        MDTextField:
+                                            id:for_text_filed
+                                            text:''
+                                            color_mode:'custom'
+                                            text_color_focus:[1,1,1,0]
+                                            text_color_normal:[1,1,1,0]
+                                            on_text:root.ids.for_text.text=get_display(reshape(self.text))
+                                            pos_hint:{'center_x':0.5,'center_y':0.5}
+                                        MDLabel:
+                                            text:''
+                                            pos_hint:{'center_x':0.5,'center_y':0.5}
+                                            id:for_text
+                                            halign:'center'
+                                            font_name:'bijan.ttf'
+
+                                    MDLabel:
+                                        text:get_display(reshape('بابت'))
+                                        halign:'right'
+                                        font_name:'bijan.ttf'
+                                        size_hint_x:0.4
+                                MDRaisedButton:
+                                    text:get_display(reshape(' افزودن'))
+                                    font_name:'bijan.ttf'
+                                    size_hint_x:0.4
+                                    height:dp(50)
+
+                                    md_bg_color:colors[app.theme_cls.primary_palette]['500']
+                                    on_press:root.add_new_income()
+                                MDLabel:
+                                    text:get_display(reshape(' ** واریزی ها به تومان باشد.'))
+                                    halign:'center'
+                                    font_name:'bijan.ttf'
+                                    size_hint_x:0.4
+
+            MDScreen:
+                name:'add_payment'
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    MDTopAppBar:
+                        title:get_display(reshape("[font=bijan.ttf]  افزودن پرداختی  [/font]"))
+                        left_action_items:[['menu' ,lambda x:nav_drawer.set_state('open'),get_display(reshape('[font=bijan.ttf]منو[/font]'))]]
+
+                        elevation:3
+
+                    MDFloatLayout:
+                        ScrollView:
+                            do_scroll_x:False
+                            do_scroll_y:True
+                            size_hint:0.95,0.95
+                            bar_width:dp(5)
+                            pos_hint: {'center_x': 0.5,'center_y': 0.5}
+                            MDGridLayout:
+                                cols:1
+
+                                size_hint: 1, None
+                                pos_hint: {'center_x': 0.5,'center_y': 0.5}
+                                height:self.minimum_height
+                                padding:dp(10)
+                                spacing:dp(10)
+                                rows_default_height:dp(100)
+
+                                MDGridLayout:
+                                    cols:2
+                                    size_hint:1,None
+                                    height:dp(50)
+                                    MDFloatLayout:
+                                        size_hint_x:0.6
+                                        MDTextField:
+                                            id:p_date_text_filed
+                                            text:''
+                                            color_mode:'custom'
+                                            text_color_focus:[1,1,1,0]
+                                            text_color_normal:[1,1,1,0]
+                                            on_text:root.ids.p_date_text.text=get_display(reshape(self.text))
+                                            pos_hint:{'center_x':0.5,'center_y':0.5}
+                                        MDLabel:
+                                            text:''
+                                            pos_hint:{'center_x':0.5,'center_y':0.5}
+                                            id:p_date_text
+                                            halign:'center'
+                                            font_name:'bijan.ttf'
+                                        MDIconButton:
+                                            icon:'calendar-month'
+                                            on_press:root.get_date()
+                                            pos_hint: {'center_x': 0.1,'center_y': 0.5}
+
+
+                                    MDLabel:
+                                        text:get_display(reshape('تاریخ پرداخت'))
+                                        halign:'right'
+                                        font_name:'bijan.ttf'
+                                        size_hint_x:0.4
+
+                                MDGridLayout:
+                                    cols:2
+                                    size_hint:1,None
+                                    height:dp(50)
+                                    MDFloatLayout:
+                                        size_hint_x:0.6
+                                        MDTextField:
+                                            id:p_amount_text_filed
+                                            text:''
+                                            color_mode:'custom'
+                                            text_color_focus:[1,1,1,0]
+                                            text_color_normal:[1,1,1,0]
+                                            on_text:root.ids.p_amount_text.text=get_display(reshape(self.text))
+                                            pos_hint:{'center_x':0.5,'center_y':0.5}
+                                        MDLabel:
+                                            text:''
+                                            pos_hint:{'center_x':0.5,'center_y':0.5}
+                                            id:p_amount_text
+                                            halign:'center'
+                                            font_name:'bijan.ttf'
+
+                                    MDLabel:
+                                        text:get_display(reshape('مبلغ پرداختی'))
+                                        halign:'right'
+                                        font_name:'bijan.ttf'
+                                        size_hint_x:0.4
+                                MDGridLayout:
+                                    cols:2
+                                    size_hint:1,None
+                                    height:dp(50)
+                                    MDFloatLayout:
+                                        size_hint_x:0.6
+                                        MDTextField:
+                                            id:p_for_text_filed
+                                            text:''
+                                            color_mode:'custom'
+                                            text_color_focus:[1,1,1,0]
+                                            text_color_normal:[1,1,1,0]
+                                            on_text:root.ids.p_for_text.text=get_display(reshape(self.text))
+                                            pos_hint:{'center_x':0.5,'center_y':0.5}
+                                        MDLabel:
+                                            text:''
+                                            pos_hint:{'center_x':0.5,'center_y':0.5}
+                                            id:p_for_text
+                                            halign:'center'
+                                            font_name:'bijan.ttf'
+
+                                    MDLabel:
+                                        text:get_display(reshape('بابت'))
+                                        halign:'right'
+                                        font_name:'bijan.ttf'
+                                        size_hint_x:0.4
+                                MDGridLayout:
+                                    cols:2
+                                    size_hint:1,None
+                                    height:dp(50)
+                                    MDFloatLayout:
+                                        size_hint_x:0.6
+                                        MDTextField:
+                                            id:whom_text_filed
+                                            text:''
+                                            color_mode:'custom'
+                                            text_color_focus:[1,1,1,0]
+                                            text_color_normal:[1,1,1,0]
+                                            on_text:root.ids.whom_text.text=get_display(reshape(self.text))
+                                            pos_hint:{'center_x':0.5,'center_y':0.5}
+                                        MDLabel:
+                                            text:''
+                                            pos_hint:{'center_x':0.5,'center_y':0.5}
+                                            id:whom_text
+                                            halign:'center'
+                                            font_name:'bijan.ttf'
+
+                                    MDLabel:
+                                        text:get_display(reshape(' بستانکار '))
+                                        halign:'right'
+                                        font_name:'bijan.ttf'
+                                        size_hint_x:0.4
+                                MDRaisedButton:
+                                    text:get_display(reshape('افزودن'))
+                                    font_name:'bijan.ttf'
+                                    size_hint_x:0.4
+                                    height:dp(50)
+                                    md_bg_color:colors[app.theme_cls.primary_palette]['500']
+                                    on_press:root.add_new_payment()
+                                MDLabel:
+                                    text:get_display(reshape(' **  پرداختی‌ها به تومان باشد.'))
+                                    halign:'center'
+                                    font_name:'bijan.ttf'
+                                    size_hint_x:0.4
+                                    
+            MDScreen:
+                name:'add_buildingcog'
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    MDTopAppBar:
+                        title:get_display(reshape("[font=bijan.ttf]  افزودن خدمات  [/font]"))
+                        left_action_items:[['menu' ,lambda x:nav_drawer.set_state('open'),get_display(reshape('[font=bijan.ttf]منو[/font]'))]]
+
+                        elevation:3
+
+                    MDFloatLayout:
+                        ScrollView:
+                            do_scroll_x:False
+                            do_scroll_y:True
+                            size_hint:0.95,0.95
+                            bar_width:dp(5)
+                            pos_hint: {'center_x': 0.5,'center_y': 0.5}
+                            MDGridLayout:
+                                cols:1
+                                size_hint: 1, None
+                                pos_hint: {'center_x': 0.5,'center_y': 0.5}
+                                height:self.minimum_height
+                                padding:dp(10)
+                                spacing:dp(10)
+                                rows_default_height:dp(100)
+
+
+
+
+
+            MDScreen:
+                name:'payment'
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    MDTopAppBar:
+                        title:get_display(reshape("[font=bijan.ttf] پرداختی‌ها  [/font]"))
+                        left_action_items:[['menu' ,lambda x:nav_drawer.set_state('open'),get_display(reshape('[font=bijan.ttf]منو[/font]'))]]
+
+                        elevation:3
+
+                    MDFloatLayout:
+                        ScrollView:
+                            do_scroll_x:False
+                            do_scroll_y:True
+                            size_hint:0.95,0.95
+                            bar_width:dp(5)
+                            pos_hint: {'center_x': 0.5,'center_y': 0.5}
+                            MDGridLayout:
+                                cols:1
+                                id:payment_report
+                                size_hint: 1, None
+                                pos_hint: {'center_x': 0.5,'center_y': 0.5}
+                                height:self.minimum_height
+                                padding:dp(10)
+                                spacing:dp(10)
+                                rows_default_height:dp(100)
+            MDScreen:
+                name:'income'
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    MDTopAppBar:
+                        title:get_display(reshape("[font=bijan.ttf] واریزی ها  [/font]"))
+                        left_action_items:[['menu' ,lambda x:nav_drawer.set_state('open'),get_display(reshape('[font=bijan.ttf]منو[/font]'))]]
+                        
+                        elevation:3
+                        
+                    MDFloatLayout:
+                        ScrollView:
+                            do_scroll_x:False
+                            do_scroll_y:True
+                            size_hint:0.95,0.95
+                            bar_width:dp(5)
+                            pos_hint: {'center_x': 0.5,'center_y': 0.5}
+                            MDGridLayout:
+                                cols:1
+                                id:income_report
+                                size_hint: 1, None
+                                pos_hint: {'center_x': 0.5,'center_y': 0.5}
+                                height:self.minimum_height
+                                padding:dp(10)
+                                spacing:dp(10)
+                                rows_default_height:dp(100)
+
+
+
+            MDScreen:
+                name:'setting'
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    MDTopAppBar:
+                        title:get_display(reshape("[font=bijan.ttf]تنظیمات [/font]"))
+                        left_action_items:[['menu' ,lambda x:nav_drawer.set_state('open'),get_display(reshape('[font=bijan.ttf]منو[/font]'))]]
+                        elevation:3
+                        md_bg_color:colors[app.theme_cls.primary_palette]['500']
+
+                       
+                        
+                    MDFloatLayout:
+
+                        MDLabel:
+                            pos_hint: {'center_x': 0.8,'center_y': 0.8}
+                            text:get_display(reshape('تغییر رنگ '))
+                            font_name:app.font_name
+                            halign:'center'
+                                
+
+                        MDCircularLayout:
+                            size_hint: None, None
+                            pos_hint: {'center_x': 0.5,'center_y': 0.55}
+                            height:self.parent.width/1.3
+                            width: self.parent.width/1.3
+                            
+                            Mycolors:
+                                md_bg_color:colors['Red']['500']
+                                on_press: app.theme_cls.primary_palette='Red'
+                                on_release:root.savesettingcolor('Red')
+                                
+                            Mycolors:
+                                md_bg_color:colors['Pink']['500']
+                                on_press: app.theme_cls.primary_palette='Pink'
+                                on_release:root.savesettingcolor('Pink')
+                            Mycolors:
+                                md_bg_color:colors['Purple']['500']
+                                on_press: app.theme_cls.primary_palette='Purple'
+                                on_release:root.savesettingcolor('Purple')
+                            Mycolors:
+                                md_bg_color:colors['Indigo']['500']
+                                on_press: app.theme_cls.primary_palette='Indigo'
+                                on_release:root.savesettingcolor('Indigo')
+                            Mycolors:
+                                md_bg_color:colors['Blue']['500']
+                                on_release:root.savesettingcolor('Blue')
+                                on_press: app.theme_cls.primary_palette='Blue'
+                            
+                            Mycolors:
+                                md_bg_color:colors['Teal']['500']
+                                on_press: app.theme_cls.primary_palette='Teal'
+                                on_release:root.savesettingcolor('Teal')
+                            Mycolors:
+                                md_bg_color:colors['Green']['500']
+                                on_release:root.savesettingcolor('Green')
+                                on_press: app.theme_cls.primary_palette='Green'
+                            
+                            
+                            Mycolors:
+                                md_bg_color:colors['Amber']['500']
+                                on_release:root.savesettingcolor('Amber')
+                                on_press: app.theme_cls.primary_palette='Amber'
+                            Mycolors:
+                                md_bg_color:colors['Orange']['500']
+                                on_release:root.savesettingcolor('Orange')
+                                on_press: app.theme_cls.primary_palette='Orange'
+                            Mycolors:
+                                md_bg_color:colors['DeepOrange']['500']
+                                on_release:root.savesettingcolor('DeepOrange')
+                                on_press: app.theme_cls.primary_palette='DeepOrange'
+                            
+                            Mycolors:
+                                md_bg_color:colors['Gray']['500']
+                                on_release:root.savesettingcolor('Gray')
+                                on_press: app.theme_cls.primary_palette='Gray'
+                            Mycolors:
+                                md_bg_color:colors['BlueGray']['500']
+                                on_release:root.savesettingcolor('BlueGray')
+                                on_press: app.theme_cls.primary_palette='BlueGray'
+                            
+                    
+                        
+
+
+            MDScreen:
+                name:'about'
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    MDTopAppBar:
+                        title:get_display(reshape("[font=bijan.ttf]درباره [/font]"))
+                        left_action_items:[['menu' ,lambda x:nav_drawer.set_state('open'),get_display(reshape('[font=bijan.ttf]منو[/font]'))]]
+                        
+                        elevation:3
+                        
+                    MDFloatLayout:
+                        MDLabel:
+                            text:get_display(reshape('نسخه شماره ۱ '))
+                            halign:'right'
+                            font_size:self.parent.width/30
+                            font_name:'bijan.ttf'
+                            pos_hint: {'center_x': 0.4,'center_y': 0.9}
+                        MDLabel:
+                            text:get_display(reshape('جهت سفارش نرم افزار خود با من تماس بگیرید '))
+                            halign:'center'
+                            theme_text_color:'Custom'
+                            text_color:colors[app.theme_cls.primary_palette]['500']
+                            font_size:self.parent.width/25
+                            font_name:'bijan.ttf'
+                            pos_hint: {'center_x': 0.5,'center_y': 0.7}
+                        MDFloatLayout:
+                            size_hint: 0.9, None
+                            height:dp(70)
+                            cols:2
+                            pos_hint: {'center_x': 0.5,'center_y': 0.3}
+                            MDLabel:
+                                text:'Phone:+98-0916-990-4353'
+                                halign:'center'
+                                theme_text_color:'Custom'
+                                text_color:colors[app.theme_cls.primary_palette]['500']
+                                font_size:self.parent.width/15
+                                font_name:'bijan.ttf'
+                                pos_hint: {'center_x': 0.5,'center_y': 0.9}
+                            MDLabel:
+                                text:'Instagram:@Codewithjeff'
+                                halign:'center'
+                                theme_text_color:'Custom'
+                                text_color:colors[app.theme_cls.primary_palette]['500']
+                                font_size:self.parent.width/20
+                                font_name:'bijan.ttf'
+                                pos_hint: {'center_x': 0.5,'center_y': 0.3}
+
+
+
+            MDScreen:
+                name:'owners'
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    MDTopAppBar:
+                        title:get_display(reshape("[font=bijan.ttf]مالکین [/font]"))
+                        left_action_items:[['menu' ,lambda x:nav_drawer.set_state('open'),get_display(reshape('[font=bijan.ttf]منو[/font]'))]]
+                        elevation:3
+
+
+                    MDFloatLayout:
+                        padding: dp(10)
+                        spacing:dp(10)
+
+                        ScrollView:
+                            size_hint: 1, 0.9
+                            do_scroll_x:False
+                            do_scroll_y:True
+                            pos_hint:{'center_x':0.5,'top':1}
+                            MDGridLayout:
+                                cols:1
+                                size_hint: 1, None
+                                height:self.minimum_height
+                                rows_default_height:dp(50)
+                                pos_hint:{'center_x':0.5,'center_y':0.5}
+                                id:owners_pad
+                                padding:dp(10)
+                                spacing:dp(20)
+                        MDFloatLayout:
+                            size_hint:1,0.7
+                            radius:[20]
+                            id:addowner
+                            md_bg_color:colors[app.theme_cls.primary_palette]['500']
+                            pos_hint:{'center_x':0.5,'center_y':-1}
+                            MDIconButton:
+                                icon:'chevron-triple-down'
+                                pos_hint:{'center_x':0.48,'center_y':0.95}
+                                icon_size:'30sp'
+                                on_press:root.showaddowner()
+                                theme_text_color:'Custom'
+                                text_color:'white'
+                            MDGridLayout:
+                                cols:2
+                                size_hint:0.8,None
+                                height:dp(50)
+                                pos_hint:{'center_x':0.5,'center_y':0.8}
+                                MDFloatLayout:
+                                    size_hint_x:0.6
+                                    MDTextField:
+                                        id:owner_name_input
+                                        text:''
+                                        color_mode:'custom'
+                                        text_color_focus:[1,1,1,0]
+                                        text_color_normal:[1,1,1,0]
+                                        on_text:root.ids.owner_name_txt.text=get_display(reshape(self.text))
+                                        pos_hint:{'center_x':0.5,'center_y':0.5}
+                                    MDLabel:
+                                        text:''
+                                        pos_hint:{'center_x':0.5,'center_y':0.5}
+                                        id:owner_name_txt
+                                        halign:'center'
+                                        font_name:'bijan.ttf'
+
+                                MDLabel:
+                                    text:get_display(reshape('نام:'))
+                                    halign:'right'
+                                    font_name:'bijan.ttf'
+                                    size_hint_x:0.4
+                            MDGridLayout:
+                                cols:2
+                                size_hint:0.8,None
+                                height:dp(50)
+                                pos_hint:{'center_x':0.5,'center_y':0.65}
+                                MDFloatLayout:
+                                    size_hint_x:0.6
+                                    MDTextField:
+                                        id:owner_family_name_input
+                                        text:''
+                                        color_mode:'custom'
+                                        text_color_focus:[1,1,1,0]
+                                        text_color_normal:[1,1,1,0]
+                                        on_text:root.ids.owner_family_name_txt.text=get_display(reshape(self.text))
+                                        pos_hint:{'center_x':0.5,'center_y':0.5}
+                                    MDLabel:
+                                        text:''
+                                        pos_hint:{'center_x':0.5,'center_y':0.5}
+                                        id:owner_family_name_txt
+                                        halign:'center'
+                                        font_name:'bijan.ttf'
+                                MDLabel:
+                                    text:get_display(reshape('نام خانوادگی:'))
+                                    halign:'right'
+                                    font_name:'bijan.ttf'
+                                    size_hint_x:0.4
+                            MDGridLayout:
+                                cols:2
+                                size_hint:0.8,None
+                                height:dp(50)
+                                pos_hint:{'center_x':0.5,'center_y':0.5}
+                                MDFloatLayout:
+                                    size_hint_x:0.6
+                                    MDTextField:
+                                        id:owner_phone_input
+                                        text:''
+                                        color_mode:'custom'
+                                        text_color_focus:[1,1,1,0]
+                                        text_color_normal:[1,1,1,0]
+                                        on_text:root.ids.owner_phone_txt.text=get_display(reshape(self.text))
+                                        pos_hint:{'center_x':0.5,'center_y':0.5}
+                                    MDLabel:
+                                        text:''
+                                        pos_hint:{'center_x':0.5,'center_y':0.5}
+                                        id:owner_phone_txt
+                                        halign:'center'
+                                        font_name:'bijan.ttf'
+
+                                MDLabel:
+                                    text:get_display(reshape('شماره موبایل:'))
+                                    halign:'right'
+                                    font_name:'bijan.ttf'
+                                    size_hint_x:0.4
+                            MDGridLayout:
+                                cols:2
+                                size_hint:0.8,None
+                                height:dp(50)
+                                pos_hint:{'center_x':0.5,'center_y':0.35}
+                                MDFloatLayout:
+                                    size_hint_x:0.6
+                                    MDTextField:
+                                        id:owner_unit_input
+                                        text:''
+                                        color_mode:'custom'
+                                        text_color_focus:[1,1,1,0]
+                                        text_color_normal:[1,1,1,0]
+                                        on_text:root.ids.owner_unit_txt.text=get_display(reshape(self.text))
+                                        pos_hint:{'center_x':0.5,'center_y':0.5}
+                                    MDLabel:
+                                        text:''
+                                        pos_hint:{'center_x':0.5,'center_y':0.5}
+                                        id:owner_unit_txt
+                                        halign:'center'
+                                        font_name:'bijan.ttf'
+
+                                MDLabel:
+                                    text:get_display(reshape('شماره واحد:'))
+                                    halign:'right'
+                                    font_name:'bijan.ttf'
+                                    size_hint_x:0.4
+
+                            MDIconButton:
+                                icon:'database-plus'
+                                pos_hint:{'center_x':0.1,'center_y':0.1}
+                                icon_size:'30sp'
+                                theme_text_color:'Custom'
+                                text_color:'white'
+                                on_press:root.addownertodatabase()
+
+
+            MDScreen:
+                name:'neighbours'
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    MDTopAppBar:
+                        title:get_display(reshape("[font=bijan.ttf]‌ساکنین [/font]"))
+                        left_action_items:[['menu' ,lambda x:nav_drawer.set_state('open'),get_display(reshape('[font=bijan.ttf]منو[/font]'))]]
+
+                        elevation:3
+
+                    MDFloatLayout:
+
+                        ScrollView:
+                            size_hint: 1, 0.9
+                            do_scroll_x:False
+                            do_scroll_y:True
+                            pos_hint:{'center_x':0.5,'top':1}
+                            MDGridLayout:
+                                cols:1
+                                size_hint: 1, None
+                                height:self.minimum_height
+                                pos_hint:{'center_x':0.5,'center_y':0.5}
+                                rows_default_height:dp(50)
+                                id:neighbor_pad
+                                padding:dp(5)
+                                spacing:dp(10)
+                        MDBoxLayout:
+                            orientation:'vertical'
+                            size_hint:1,0.8
+                            radius:[20]
+                            id:addresident
+                            md_bg_color:colors[app.theme_cls.primary_palette]['500']
+                            pos_hint:{'center_x':0.5,'center_y':-1}
+                            MDIconButton:
+                                icon:'chevron-triple-down'
+                                pos_hint:{'center_x':0.48,'center_y':0.95}
+                                icon_size:'30sp'
+                                on_press:root.showaddresident()
+                                theme_text_color:'Custom'
+                                text_color:'white'
+                            MDGridLayout:
+                                cols:2
+                                size_hint:0.8,None
+                                height:dp(50)
+                                pos_hint:{'center_x':0.5,'center_y':0.8}
+                                MDFloatLayout:
+                                    size_hint_x:0.6
+                                    MDTextField:
+                                        id:resident_name_input
+                                        text:''
+                                        color_mode:'custom'
+                                        text_color_focus:[1,1,1,0]
+                                        text_color_normal:[1,1,1,0]
+                                        on_text:root.ids.resident_name_txt.text=get_display(reshape(self.text))
+                                        pos_hint:{'center_x':0.5,'center_y':0.5}
+                                    MDLabel:
+                                        text:''
+                                        pos_hint:{'center_x':0.5,'center_y':0.5}
+                                        id:resident_name_txt
+                                        halign:'center'
+                                        font_name:'bijan.ttf'
+
+                                MDLabel:
+                                    text:get_display(reshape('نام:'))
+                                    halign:'right'
+                                    font_name:'bijan.ttf'
+                                    size_hint_x:0.4
+                            MDGridLayout:
+                                cols:2
+                                size_hint:0.8,None
+                                height:dp(50)
+                                pos_hint:{'center_x':0.5,'center_y':0.65}
+                                MDFloatLayout:
+                                    size_hint_x:0.6
+                                    MDTextField:
+                                        id:resident_family_name_input
+                                        text:''
+                                        color_mode:'custom'
+                                        text_color_focus:[1,1,1,0]
+                                        text_color_normal:[1,1,1,0]
+                                        on_text:root.ids.resident_family_name_txt.text=get_display(reshape(self.text))
+                                        pos_hint:{'center_x':0.5,'center_y':0.5}
+                                    MDLabel:
+                                        text:''
+                                        pos_hint:{'center_x':0.5,'center_y':0.5}
+                                        id:resident_family_name_txt
+                                        halign:'center'
+                                        font_name:'bijan.ttf'
+                                MDLabel:
+                                    text:get_display(reshape('نام خانوادگی:'))
+                                    halign:'right'
+                                    font_name:'bijan.ttf'
+                                    size_hint_x:0.4
+                            MDGridLayout:
+                                cols:2
+                                size_hint:0.8,None
+                                height:dp(50)
+                                pos_hint:{'center_x':0.5,'center_y':0.5}
+                                MDFloatLayout:
+                                    size_hint_x:0.6
+                                    MDTextField:
+                                        id:resident_phone_input
+                                        text:''
+                                        color_mode:'custom'
+                                        text_color_focus:[1,1,1,0]
+                                        text_color_normal:[1,1,1,0]
+                                        on_text:root.ids.resident_phone_txt.text=get_display(reshape(self.text))
+                                        pos_hint:{'center_x':0.5,'center_y':0.5}
+                                    MDLabel:
+                                        text:''
+                                        pos_hint:{'center_x':0.5,'center_y':0.5}
+                                        id:resident_phone_txt
+                                        halign:'center'
+                                        font_name:'bijan.ttf'
+
+                                MDLabel:
+                                    text:get_display(reshape('شماره موبایل:'))
+                                    halign:'right'
+                                    font_name:'bijan.ttf'
+                                    size_hint_x:0.4
+                            MDGridLayout:
+                                cols:2
+                                size_hint:0.8,None
+                                height:dp(50)
+                                pos_hint:{'center_x':0.5,'center_y':0.35}
+                                MDFloatLayout:
+                                    size_hint_x:0.6
+                                    MDTextField:
+                                        id:resident_unit_input
+                                        text:''
+                                        color_mode:'custom'
+                                        text_color_focus:[1,1,1,0]
+                                        text_color_normal:[1,1,1,0]
+                                        on_text:root.ids.resident_unit_txt.text=get_display(reshape(self.text))
+                                        pos_hint:{'center_x':0.5,'center_y':0.5}
+                                    MDLabel:
+                                        text:''
+                                        pos_hint:{'center_x':0.5,'center_y':0.5}
+                                        id:resident_unit_txt
+                                        halign:'center'
+                                        font_name:'bijan.ttf'
+
+                                MDLabel:
+                                    text:get_display(reshape('شماره واحد:'))
+                                    halign:'right'
+                                    font_name:'bijan.ttf'
+                                    size_hint_x:0.4
+                            MDGridLayout:
+                                cols:2
+                                size_hint:0.8,None
+                                height:dp(50)
+                                pos_hint:{'center_x':0.5,'center_y':0.65}
+                                MDFloatLayout:
+                                    size_hint_x:0.6
+                                    MDTextField:
+                                        id:resident_family_number_input
+                                        text:''
+                                        color_mode:'custom'
+                                        text_color_focus:[1,1,1,0]
+                                        text_color_normal:[1,1,1,0]
+                                        on_text:root.ids.resident_family_number_txt.text=get_display(reshape(self.text))
+                                        pos_hint:{'center_x':0.5,'center_y':0.5}
+                                    MDLabel:
+                                        text:''
+                                        pos_hint:{'center_x':0.5,'center_y':0.5}
+                                        id:resident_family_number_txt
+                                        halign:'center'
+                                        font_name:'bijan.ttf'
+                                MDLabel:
+                                    text:get_display(reshape('تعداد اعضا :'))
+                                    halign:'right'
+                                    font_name:'bijan.ttf'
+                                    size_hint_x:0.4
+                            MDGridLayout:
+                                cols:2
+                                size_hint:0.8,None
+                                height:dp(50)
+                                pos_hint:{'center_x':0.5,'center_y':0.65}
+                                MDFloatLayout:
+                                    size_hint_x:0.6
+                                    MDTextField:
+                                        id:resident_date_in_input
+                                        text:''
+                                        color_mode:'custom'
+                                        text_color_focus:[1,1,1,0]
+                                        text_color_normal:[1,1,1,0]
+                                        on_text:root.ids.resident_date_in_txt.text=get_display(reshape(self.text))
+                                        pos_hint:{'center_x':0.5,'center_y':0.5}
+                                    MDLabel:
+                                        text:''
+                                        pos_hint:{'center_x':0.5,'center_y':0.5}
+                                        id:resident_date_in_txt
+                                        halign:'center'
+                                        font_name:'bijan.ttf'
+                                MDLabel:
+                                    text:get_display(reshape('تاریخ ورود :'))
+                                    halign:'right'
+                                    font_name:'bijan.ttf'
+                                    size_hint_x:0.4
+
+                            MDIconButton:
+                                icon:'database-plus'
+                                pos_hint:{'center_x':0.1,'center_y':0.1}
+                                icon_size:'30sp'
+                                theme_text_color:'Custom'
+                                text_color:'white'
+                                on_press:root.addresidenttodatabase()
+
+
+
+
+            MDScreen:
+                name:'buildingcog'
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    MDTopAppBar:
+                        title:get_display(reshape("[font=bijan.ttf] خدمات ساختمان [/font]"))
+                        left_action_items:[['menu' ,lambda x:nav_drawer.set_state('open'),get_display(reshape('[font=bijan.ttf]منو[/font]'))]]
+                        elevation:3
+                        
+                    MDBoxLayout:
+                        orientation: 'vertical'
+                        padding: dp(2)
+                        spacing:dp(10)
+
+                        ScrollView:
+                            size_hint: 1, 0.9
+                            do_scroll_x:False
+                            do_scroll_y:True
+                            MDGridLayout:
+                                cols:2
+                                size_hint: 1, None
+                                height:self.minimum_height
+                                rows_default_height:dp(50)
+                                id:building_cog_pad
+                                padding:dp(2)
+                                spacing:dp(5)
+
+                                            
+
+                        
+               
+            
+            
+        MDNavigationDrawer:
+            id:nav_drawer
+            padding: 50, 50, 12, 16
+            radius:(0,20,20,0)
+            md_bg_color:'white'
+            
+            ContentNavigationDrawer:
+                MDNavigationDrawerMenu:
+                    spacing:dp(1)
+
+                    MDNavigationDrawerItem:
+                        text:get_display(reshape("[font=bijan.ttf]خانه[/font]"))
+                        font_name:'yas.ttf'
+                        icon:'home'
+
+
+                        text_halign:'right'
+
+                        on_press:root.ids.SM.current='main'; nav_drawer.set_state('close')
+                    MDNavigationDrawerItem:
+                        text:get_display(reshape("[font=bijan.ttf] ‌ساکنین [/font]"))
+                        icon:'account-clock'
+                        on_press:root.ids.SM.current='neighbours'; nav_drawer.set_state('close')
+                        id:hamsaye
+                        right_text:'0'
+                    MDNavigationDrawerItem:
+                        text:get_display(reshape("[font=bijan.ttf] مالکین [/font]"))
+                        icon:'account'
+                        on_press:root.ids.SM.current='owners'; nav_drawer.set_state('close')
+                        id:owners
+                        right_text:'0'
+
+
+                    MDNavigationDrawerDivider:
+
+
+                    MDNavigationDrawerItem:
+                        text:get_display(reshape("[font=bijan.ttf]خدمات ساختمان[/font]"))
+                        font_name:'bijan.ttf'
+                        icon:'account-wrench'
+                        text_halign:'right'
+                        right_text:'0'
+                        id:service
+                        on_press:root.ids.SM.current='buildingcog';root. Retrieve_from_building_cogs_table();nav_drawer.set_state('close')
+                    MDNavigationDrawerItem:
+                        text:get_display(reshape("[font=bijan.ttf]یادداشت[/font]"))
+                        font_name:'yas.ttf'
+                        icon:'note'
+                        right_text:'0'
+                        id:task
+                        text_halign:'right'
+                        on_press:root.ids.SM.current='note'; nav_drawer.set_state('close')
+                    MDNavigationDrawerDivider:
+                    MDNavigationDrawerItem:
+                        text:get_display(reshape("[font=bijan.ttf] ذخیره‌اطلاعات به‌اکسل[/font]"))
+                        font_name:'yas.ttf'
+                        icon:'microsoft-excel'
+                        text_halign:'right'
+                        on_press:root.start_browsing(); nav_drawer.set_state('close')
+
+                    MDNavigationDrawerItem:
+                        text:get_display(reshape("[font=bijan.ttf]تنظیمات[/font]"))
+                        icon:'cog'
+
+                        on_press:root.ids.SM.current='setting'; nav_drawer.set_state('close')
+                    MDNavigationDrawerItem:
+                        text:get_display(reshape("[font=bijan.ttf]درباره [/font]"))
+                        icon:'information'
+
+                        on_press:root.ids.SM.current='about'; nav_drawer.set_state('close')
+                    
+                
+                        
+    
+        
+<ContentNavigationDrawer>:
+    orientation: 'vertical'
+    size:root.size
+    pos_hint: {'center_x': 0.5,'center_y': 0.5}
+
+
+
+
+
+
+                   
+<NeighborsListReportItems>:
+    font_name:'bijan.ttf'
+    size_hint:1,None
+
+    height:dp(70)
+    md_bg_color:colors[app.theme_cls.primary_palette]['100']
+    radius:[15]
+
+    MDLabel:
+        text:get_display(reshape(root.my_text))
+        halign:'right'
+        font_size:'25sp'
+        font_name:'bijan.ttf'
+        pos_hint: {'center_x': 0.45,'center_y': 0.7}
+    MDLabel:
+        text:get_display(reshape(root.secondary_text))
+        halign:'right'
+        id:neighbor_sole_phone_number
+        font_size:'15sp'
+        font_name:'bijan.ttf'
+        theme_text_color:'Custom'
+        text_color:[0,0,0,0.5]
+        pos_hint: {'center_x': 0.45,'center_y': 0.2}
+
+    MDIconButton:
+        icon:'account-remove'
+        icon_size:'17sp'
+        pos_hint: {'center_x': 0.1,'center_y': 0.5}
+        on_press:root.remove_account(root.ids.neighbor_sole_phone_number.text) # Shows just the phone Number
+<OwnersListReportItems>:
+    font_name:'bijan.ttf'
+    size_hint:1,None
+
+    height:dp(70)
+    md_bg_color:colors[app.theme_cls.primary_palette]['100']
+    radius:[15]
+
+    MDLabel:
+        text:get_display(reshape(root.my_text))
+        halign:'right'
+        font_size:'25sp'
+        font_name:'bijan.ttf'
+        pos_hint: {'center_x': 0.45,'center_y': 0.7}
+    MDLabel:
+        text:get_display(reshape(root.secondary_text))
+        halign:'right'
+        id:owner_sole_phone_number
+        font_size:'15sp'
+        font_name:'bijan.ttf'
+        theme_text_color:'Custom'
+        text_color:[0,0,0,0.5]
+        pos_hint: {'center_x': 0.45,'center_y': 0.2}
+
+    MDIconButton:
+        icon:'account-remove'
+        icon_size:'17sp'
+        pos_hint: {'center_x': 0.1,'center_y': 0.5}
+        on_press:root.remove_owner(root.ids.owner_sole_phone_number.text) # Shows just the phone Number
+
+<IncomesListReportItems>:
+    font_name:'bijan.ttf'
+    size_hint:1,None
+    height:dp(60)
+    md_bg_color:colors['Green']['100']
+    radius:[15]
+    MDLabel:
+        text:get_display(reshape(root.unit_text))
+        halign:'center'
+        font_size:'20sp'
+        font_name:'bijan.ttf'
+        pos_hint: {'center_x': 0.7,'center_y': 0.6}
+    MDLabel:
+        text:get_display(reshape(root.date_text))
+        halign:'center'
+        font_size:'15sp'
+        font_name:'bijan.ttf'
+        theme_text_color:'Custom'
+        text_color:[0,0,0,0.5]
+        pos_hint: {'center_x': 0.7,'center_y': 0.2}
+    MDLabel:
+        text:get_display(reshape(root.amount_text))
+        halign:'center'
+        font_size:'20sp'
+        font_name:'bijan.ttf'
+        pos_hint: {'center_x': 0.3,'center_y': 0.6}
+    MDLabel:
+        text:reshape(root.for_text)
+        halign:'center'
+        font_size:'15sp'
+        font_name:'bijan.ttf'
+        theme_text_color:'Custom'
+        text_color:[0,0,0,0.5]
+        pos_hint: {'center_x': 0.3,'center_y': 0.2}
+
+<PaymentsListReportItems>:
+    font_name:'bijan.ttf'
+    size_hint:1,None
+    height:dp(60)
+    radius:[15]
+    md_bg_color:colors['Red']['100']
+
+    MDLabel:
+        text:get_display(reshape(root.date_text))
+        halign:'center'
+        font_size:'20sp'
+        font_name:'bijan.ttf'
+        pos_hint: {'center_x': 0.7,'center_y': 0.6}
+    MDLabel:
+        text:get_display(reshape(root.amount_text))
+        halign:'center'
+        font_size:'15sp'
+        font_name:'bijan.ttf'
+        theme_text_color:'Custom'
+        text_color:[0,0,0,0.5]
+        pos_hint: {'center_x': 0.7,'center_y': 0.2}
+    MDLabel:
+        text:get_display(reshape(root.for_text))
+        halign:'center'
+        font_size:'20sp'
+        font_name:'bijan.ttf'
+        pos_hint: {'center_x': 0.3,'center_y': 0.6}
+    MDLabel:
+        text:reshape(root.whom_text)
+        halign:'center'
+        font_size:'15sp'
+        font_name:'bijan.ttf'
+        theme_text_color:'Custom'
+        text_color:[0,0,0,0.5]
+        pos_hint: {'center_x': 0.3,'center_y': 0.2}
+
+<BuildingCogListReportItems>:
+    font_name:'bijan.ttf'
+    size_hint:0.5,None
+    height:dp(110)
+    radius:[20]
+    tooltip_text:get_display(reshape("[font=bijan.ttf] برای کپی شماره روی آن کلیک کنید[/font]"))
+    md_bg_color:colors[self.bg_color]['500']
+    MDLabel:
+        text:get_display(reshape(root.name_text))
+        halign:'center'
+        font_size:'25sp'
+        theme_text_color:'Custom'
+        text_color:[1,1,1,1]
+        font_name:'bijan.ttf'
+        pos_hint: {'center_x': 0.5,'center_y': 0.8}
+    MDTextButton:
+        text:get_display(reshape(root.phone_text))
+        halign:'center'
+        on_press:root.clicked(self.text)
+        font_size:'15sp'
+        font_name:'bijan.ttf'
+        theme_text_color:'Custom'
+
+        text_color:[1,1,1,1]
+        pos_hint: {'center_x': 0.5,'center_y': 0.45}
+    MDLabel:
+        text:get_display(reshape(root.type_text))
+        halign:'center'
+        font_size:'17sp'
+        theme_text_color:'Custom'
+        text_color:[1,1,1,1]
+        font_name:'bijan.ttf'
+        pos_hint: {'center_x': 0.5,'center_y': 0.15}
+
+
+
+
+
+
+
+
+
+<ItemConfirm>:
+    on_press:print('Added')
+<Neighbors_Content>:
+    pad:pad
+    orientation:'vertical'
+    ScrollView:
+        size_hint: 1, 0.9
+        do_scroll_x:False
+        do_scroll_y:True
+        MDGridLayout:
+            cols:1
+            size_hint: 1, None
+            height:self.minimum_height
+            rows_default_height:dp(50)
+            id:pad
+            padding:dp(10)
+            spacing:dp(10)
+
+
+
+<MyIconButton@MDIconButton+MDTooltip>:
+
+<MyNote>:
+    size_hint:1,None
+    height:dp(80)
+    radius:[20]
+    md_bg_color:colors[app.theme_cls.primary_palette]['500']
+    MDLabel:
+        pos_hint:{'center_x':0.9,'center_y':0.8}
+        text:root.title
+        halign:'center'
+        id:title
+        font_name:'bijan.ttf'
+    MDLabel:
+        pos_hint:{'center_x':0.5,'center_y':0.5}
+        text:root.description
+        halign:'center'
+        id:note
+        font_name:'bijan.ttf'
+
+        font_size:self.parent.width/23
+        markup:True
+    MDLabel:
+        pos_hint:{'center_x':0.5,'center_y':0.48}
+        text:root.description
+        opacity:0.2
+        halign:'center'
+        id:note
+        font_name:'bijan.ttf'
+        font_size:self.parent.width/23
+        markup:True
+
+    MDCheckbox:
+        pos_hint:{'center_x':0.1,'center_y':0.75}
+        on_active:root.checked(self,self.active,root.ids.title.text,root.ids.note.text)
+
+
+
+
+<Donenote>:
+    size_hint:1,None
+    height:dp(80)
+    radius:[20]
+    md_bg_color:colors[app.theme_cls.primary_palette]['500']
+    MDLabel:
+        pos_hint:{'center_x':0.9,'center_y':0.8}
+        text:root.title
+        halign:'center'
+        font_name:'bijan.ttf'
+        id:title
+    MDLabel:
+        pos_hint:{'center_x':0.5,'center_y':0.5}
+        text:root.description
+        halign:'center'
+        id:note
+        font_name:'bijan.ttf'
+        font_size:self.parent.width/23
+        markup:True
+    MDLabel:
+        pos_hint:{'center_x':0.5,'center_y':0.48}
+        text:root.description
+        opacity:0.2
+        halign:'center'
+        id:note
+        font_name:'bijan.ttf'
+        font_size:self.parent.width/23
+        markup:True
+
+    MDIconButton:
+        pos_hint:{'center_x':0.1,'center_y':0.75}
+        icon:'note-remove'
+        on_press:root.remove_note(root.ids.title.text)
+
+
