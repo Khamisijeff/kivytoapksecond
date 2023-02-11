@@ -448,6 +448,7 @@ warn_on_root = 1
 #[app:source.exclude_patterns@demo]
 #images/hd/*
 #
+
 #    Then, invoke the command line with the "demo" profile:
 #
 #buildozer --profile demo android debug
