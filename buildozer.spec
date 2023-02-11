@@ -37,7 +37,7 @@ version = 0.1
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,android,python -m pip install "kivy[base] @ https://github.com/kivy/kivy/archive/master.zip",pip install https://github.com/kivymd/KivyMD/archive/master.zip,jdatetime,python-bidi,arabic-reshaper,pyperclip,shutil,openpyxl,pillow,pygame
+requirements = python3,android,kivy,pip install https://github.com/kivymd/KivyMD/archive/master.zip,jdatetime,python-bidi,arabic-reshaper,pyperclip,shutil,openpyxl,pillow,pygame
 
 
 # (str) Custom source folders for requirements
